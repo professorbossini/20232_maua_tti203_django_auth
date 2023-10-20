@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 import environ
 env = environ.Env(
   DEBUG = (bool, False)
@@ -43,8 +44,18 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
-    "autenticacao_autorizacao_app"
+    "autenticacao_autorizacao_app",
+    "rest_framework_simplejwt.token_blacklist"
 ]
+
+SIMPLE_JWT = {
+  'ACCESS_TOKEN_LIFETIME': timedelta(minutes=env.int('ACCESS_TOKEN_LIFETIME')),
+  'REFRESH_TOKEN_LIFETIME': timedelta(days=env.int('REFRESH_TOKEN_LIFETIME')),
+  'ROTATE_REFRESH_TOKENS': env.bool('ROTATE_REFRESH_TOKENS'),
+  'ALGORITHM': env.str('ALGORITHM'),
+  'SIGNING_KEY': env.str('SIGNING_KEY'),
+  'AUTH_HEADER_TYPES': env.tuple('AUTH_HEADER_TYPES')
+}
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
